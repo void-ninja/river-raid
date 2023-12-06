@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://cefqxb7x2xysu"]
+
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_kcbir"]
+[ext_resource type="PackedScene" uid="uid://hnbh68x5uo0b" path="res://scenes/player.tscn" id="1_r8gwx"]
+[ext_resource type="Script" path="res://scenes/level_manager.gd" id="2_6n7pk"]
+[ext_resource type="Script" path="res://scenes/main_menu.gd" id="4_sgbcw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_75uir"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_xv330"]
+font_size = 32
+
+[node name="Main" type="Node"]
+script = ExtResource("1_kcbir")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -3.0
+offset_top = -3.0
+offset_right = 647.0
+offset_bottom = 658.0
+color = Color(0.32549, 0.568627, 0.717647, 1)
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("2_6n7pk")
+
+[node name="Player" parent="." instance=ExtResource("1_r8gwx")]
+position = Vector2(300, 500)
+
+[node name="MainMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_sgbcw")
+
+[node name="Label" type="Label" parent="MainMenu"]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 198.0
+offset_right = 451.0
+offset_bottom = 408.0
+text = "      Game 
+
+\"press space\""
+label_settings = SubResource("LabelSettings_75uir")
+
+[node name="LevelText" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 588.0
+offset_right = 120.0
+offset_bottom = 633.0
+text = "Level 0"
+label_settings = SubResource("LabelSettings_xv330")
+
+[connection signal="checkpoint" from="LevelManager" to="." method="_on_level_manager_checkpoint"]
+[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
+[connection signal="slow_down" from="Player" to="." method="_on_player_slow_down"]
+[connection signal="speed_up" from="Player" to="." method="_on_player_speed_up"]
+[connection signal="start" from="MainMenu" to="." method="_on_main_menu_start"]

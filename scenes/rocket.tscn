@@ -1,0 +1,92 @@
+[gd_scene load_steps=9 format=3 uid="uid://bs1wydwmndc4u"]
+
+[ext_resource type="Texture2D" uid="uid://dd5ooy607ok3n" path="res://assets/rocket.png" id="1_5g13p"]
+[ext_resource type="Script" path="res://scenes/rocket.gd" id="1_xe3pf"]
+
+[sub_resource type="Gradient" id="Gradient_400up"]
+offsets = PackedFloat32Array(0, 0.792593, 1)
+colors = PackedColorArray(0.941979, 0.876928, 0.251223, 1, 0.799317, 0.337374, 3.85046e-07, 1, 0.397283, 0.229045, 0.137274, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nx15g"]
+gradient = SubResource("Gradient_400up")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e7lev"]
+lifetime_randomness = 0.41
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 100.0
+initial_velocity_max = 250.0
+gravity = Vector3(0, 98, 0)
+damping_min = 50.0
+damping_max = 200.0
+scale_min = 2.0
+scale_max = 4.0
+color_ramp = SubResource("GradientTexture1D_nx15g")
+
+[sub_resource type="Animation" id="Animation_riy6k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_facq0"]
+resource_name = "fly"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dij1j"]
+_data = {
+"RESET": SubResource("Animation_riy6k"),
+"fly": SubResource("Animation_facq0")
+}
+
+[node name="Rocket" type="Area2D"]
+script = ExtResource("1_xe3pf")
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(1, -16, 5, -6, 7, 10, -7, 10, -5, -6, -1, -16)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, 8)
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_e7lev")
+lifetime = 0.2
+explosiveness = 0.14
+randomness = 0.4
+local_coords = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_5g13p")
+hframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dij1j")
+}
+autoplay = "fly"

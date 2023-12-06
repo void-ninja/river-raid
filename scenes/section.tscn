@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4d7slaj3c04g"]
+
+[ext_resource type="Texture2D" uid="uid://dtc05cfbnjtkg" path="res://assets/sections.png" id="1_ncvjc"]
+[ext_resource type="Script" path="res://scenes/section.gd" id="2_0p03w"]
+[ext_resource type="Script" path="res://scenes/section_collider.gd" id="3_ueety"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eek3y"]
+size = Vector2(128, 640)
+
+[node name="Section" type="Node2D"]
+texture_filter = 1
+script = ExtResource("2_0p03w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ncvjc")
+offset = Vector2(320, 320)
+hframes = 4
+frame = 2
+
+[node name="SectionCollider" type="Area2D" parent="."]
+script = ExtResource("3_ueety")
+
+[node name="SideColliderRight" type="CollisionShape2D" parent="SectionCollider"]
+position = Vector2(576, 320)
+shape = SubResource("RectangleShape2D_eek3y")
+
+[node name="SideColliderLeft" type="CollisionShape2D" parent="SectionCollider"]
+position = Vector2(64, 320)
+shape = SubResource("RectangleShape2D_eek3y")
+
+[node name="Frame1ColliderLeft" type="CollisionPolygon2D" parent="SectionCollider"]
+visible = false
+build_mode = 1
+polygon = PackedVector2Array(192, 83, 128, 31, 128, 609, 192, 557)
+disabled = true
+
+[node name="Frame1ColliderRight" type="CollisionPolygon2D" parent="SectionCollider"]
+visible = false
+position = Vector2(272, 43)
+build_mode = 1
+polygon = PackedVector2Array(240, -12, 176, 39, 176, 514, 240, 566)
+disabled = true
+
+[node name="Frame2Collider" type="CollisionPolygon2D" parent="SectionCollider"]
+visible = false
+build_mode = 1
+polygon = PackedVector2Array(321, 52, 400, 97, 400, 543, 321, 588, 319, 588, 240, 543, 240, 97, 319, 52)
+disabled = true
+
+[node name="Frame3ColliderLeft" type="CollisionPolygon2D" parent="SectionCollider"]
+visible = false
+build_mode = 1
+polygon = PackedVector2Array(240, 74, 128, 31, 128, 609, 240, 566)
+disabled = true
+
+[node name="Frame3ColliderRight" type="CollisionPolygon2D" parent="SectionCollider"]
+visible = false
+position = Vector2(272, 43)
+build_mode = 1
+polygon = PackedVector2Array(240, -12, 128, 31, 128, 523, 240, 566)
+disabled = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(1, 4)
+color = Color(0.709804, 0.156863, 0.145098, 1)
+polygon = PackedVector2Array(264, 636, 370, 636, 370, 627, 263, 627)
+
+[node name="Spawners" type="Node2D" parent="."]
+
+[node name="Spawner1" type="Node2D" parent="Spawners"]
+position = Vector2(320, 100)
+
+[node name="Spawner2" type="Node2D" parent="Spawners"]
+position = Vector2(320, 170)
+
+[node name="Spawner3" type="Node2D" parent="Spawners"]
+position = Vector2(320, 240)
+
+[node name="Spawner4" type="Node2D" parent="Spawners"]
+position = Vector2(320, 310)
+
+[node name="Spawner5" type="Node2D" parent="Spawners"]
+position = Vector2(320, 380)
+
+[node name="Spawner6" type="Node2D" parent="Spawners"]
+position = Vector2(320, 450)
+
+[node name="Spawner7" type="Node2D" parent="Spawners"]
+position = Vector2(320, 520)

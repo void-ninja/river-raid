@@ -1,0 +1,154 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqt7jlvwhx5hy"]
+
+[ext_resource type="Script" path="res://scenes/helicopter.gd" id="1_t2dw2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bmsql"]
+size = Vector2(62, 34)
+
+[sub_resource type="Animation" id="Animation_1ikat"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Polygon2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GPUParticles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ln1yp"]
+resource_name = "explode"
+length = 2.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Polygon2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xvq5j"]
+_data = {
+"RESET": SubResource("Animation_1ikat"),
+"explode": SubResource("Animation_ln1yp")
+}
+
+[sub_resource type="Gradient" id="Gradient_gadp2"]
+colors = PackedColorArray(0.721569, 0.611765, 0.384314, 1, 0.721569, 0.611765, 0.384314, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4dhs6"]
+gradient = SubResource("Gradient_gadp2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1d1ff"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(15, 10, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 84.521
+initial_velocity_min = 200.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 200, 0)
+damping_min = 38.202
+damping_max = 38.202
+scale_min = 4.0
+scale_max = 5.0
+color_ramp = SubResource("GradientTexture1D_4dhs6")
+
+[node name="Helicopter" type="Area2D"]
+script = ExtResource("1_t2dw2")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.721569, 0.611765, 0.384314, 1)
+offset = Vector2(2, 25)
+polygon = PackedVector2Array(25, -45, 0, -45, 0, -41, 19, -35, 27, -20, 12, -20, 12, -14, 23, -13, 24, -11, 12, -11, 9, -11, -21, -11, -19, -13, 9, -14, 9, -20, 4, -20, -7, -20, -7, -14, -7, -11, -10, -11, -10, -13.938, -10, -20, -21, -21, -26, -23, -36, -29, -35, -31, -33, -30, -31, -34, -29, -33, -31, -29, -25, -25, -20, -25, -11, -34, -4, -41, -4, -45, -28, -45, -28, -47, 25, -47)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, -3)
+shape = SubResource("RectangleShape2D_bmsql")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xvq5j")
+}
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+texture_filter = 1
+emitting = false
+amount = 400
+process_material = SubResource("ParticleProcessMaterial_1d1ff")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.89
+local_coords = true
