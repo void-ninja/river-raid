@@ -15,7 +15,7 @@ script = ExtResource("2_0p03w")
 texture = ExtResource("1_ncvjc")
 offset = Vector2(320, 320)
 hframes = 4
-frame = 2
+frame = 3
 
 [node name="SectionCollider" type="Area2D" parent="."]
 script = ExtResource("3_ueety")
@@ -31,33 +31,31 @@ shape = SubResource("RectangleShape2D_eek3y")
 [node name="Frame1ColliderLeft" type="CollisionPolygon2D" parent="SectionCollider"]
 visible = false
 build_mode = 1
-polygon = PackedVector2Array(192, 83, 128, 31, 128, 609, 192, 557)
+polygon = PackedVector2Array(189, 84, 128, 31, 128, 609, 189, 554)
 disabled = true
 
 [node name="Frame1ColliderRight" type="CollisionPolygon2D" parent="SectionCollider"]
 visible = false
 position = Vector2(272, 43)
 build_mode = 1
-polygon = PackedVector2Array(240, -12, 176, 39, 176, 514, 240, 566)
+polygon = PackedVector2Array(240, -12, 180, 40, 180, 513, 240, 566)
 disabled = true
 
 [node name="Frame2Collider" type="CollisionPolygon2D" parent="SectionCollider"]
 visible = false
 build_mode = 1
-polygon = PackedVector2Array(321, 52, 400, 97, 400, 543, 321, 588, 319, 588, 240, 543, 240, 97, 319, 52)
+polygon = PackedVector2Array(321, 58, 394, 97, 395, 540, 321, 580, 319, 580, 245, 540, 245, 97, 319, 58)
 disabled = true
 
 [node name="Frame3ColliderLeft" type="CollisionPolygon2D" parent="SectionCollider"]
-visible = false
 build_mode = 1
-polygon = PackedVector2Array(240, 74, 128, 31, 128, 609, 240, 566)
+polygon = PackedVector2Array(233, 77, 128, 31, 128, 609, 232, 563)
 disabled = true
 
 [node name="Frame3ColliderRight" type="CollisionPolygon2D" parent="SectionCollider"]
-visible = false
 position = Vector2(272, 43)
 build_mode = 1
-polygon = PackedVector2Array(240, -12, 128, 31, 128, 523, 240, 566)
+polygon = PackedVector2Array(240, -12, 134, 36, 135, 520, 240, 566)
 disabled = true
 
 [node name="Polygon2D" type="Polygon2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cefqxb7x2xysu"]
+[gd_scene load_steps=8 format=3 uid="uid://cefqxb7x2xysu"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_kcbir"]
 [ext_resource type="PackedScene" uid="uid://hnbh68x5uo0b" path="res://scenes/player.tscn" id="1_r8gwx"]
@@ -10,6 +10,10 @@ font_size = 48
 
 [sub_resource type="LabelSettings" id="LabelSettings_xv330"]
 font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_yidln"]
+font_size = 32
+font_color = Color(0.94902, 0.411765, 0.427451, 1)
 
 [node name="Main" type="Node"]
 script = ExtResource("1_kcbir")
@@ -45,15 +49,64 @@ text = "      Game
 \"press space\""
 label_settings = SubResource("LabelSettings_75uir")
 
-[node name="LevelText" type="Label" parent="."]
+[node name="HighScoreText" type="Label" parent="MainMenu"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 18.0
+offset_right = 54.0
+offset_bottom = 41.0
+label_settings = SubResource("LabelSettings_xv330")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 15.0
-offset_top = 588.0
-offset_right = 120.0
-offset_bottom = 633.0
+offset_top = 15.0
+offset_right = 55.0
+offset_bottom = 55.0
+
+[node name="LevelText" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 543.0
+offset_right = 117.0
+offset_bottom = 588.0
 text = "Level 0"
 label_settings = SubResource("LabelSettings_xv330")
 
+[node name="ScoreText" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 582.0
+offset_right = 134.0
+offset_bottom = 627.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_xv330")
+
+[node name="FuelIndicator" type="ProgressBar" parent="UI"]
+layout_mode = 0
+offset_left = 586.0
+offset_top = 464.0
+offset_right = 616.0
+offset_bottom = 614.0
+step = 1.0
+value = 100.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Label" type="Label" parent="UI/FuelIndicator"]
+layout_mode = 0
+offset_left = -75.0
+offset_top = 101.0
+offset_right = -11.0
+offset_bottom = 146.0
+text = "Fuel
+"
+label_settings = SubResource("LabelSettings_yidln")
+
+[connection signal="add_points" from="LevelManager" to="." method="_on_level_manager_add_points"]
 [connection signal="checkpoint" from="LevelManager" to="." method="_on_level_manager_checkpoint"]
+[connection signal="fuel_update" from="Player" to="." method="_on_player_fuel_update"]
 [connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
 [connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
 [connection signal="slow_down" from="Player" to="." method="_on_player_slow_down"]

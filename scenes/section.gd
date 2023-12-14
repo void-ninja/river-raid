@@ -1,9 +1,11 @@
 extends Node2D
 
 signal deleted(old_section_global_position_y)
+signal add_points(amount)
 
 var boat = preload("res://scenes/boat.tscn")
 var helicopter = preload("res://scenes/helicopter.tscn")
+var fuel_depot = preload("res://scenes/fuel_depot.tscn")
 
 var current_frame = 0
 var has_recycled := false
@@ -60,29 +62,35 @@ func set_frame(frame_to_set:int):
 			frame_3_collider_right.disabled = false
 	else:
 		print_debug("set_frame out of range")
-	if current_frame != 3: spawn_enemies()
+	if current_frame != 3: spawn_things()
 	
 
-func spawn_enemies() -> void:
+func spawn_things() -> void:
 	for i in spawners.get_children():
 		var num = randi_range(1,4)
-		var enemy
-		if num == 1 or num == 2:
+		var thing
+		if num == 1:
 			continue
+		elif num == 2:
+			thing = fuel_depot.instantiate()
 		elif num == 3:
-			enemy = boat.instantiate()
+			thing = boat.instantiate()
 		elif num == 4:
-			enemy = helicopter.instantiate()
+			thing = helicopter.instantiate()
 			
-		i.add_child(enemy)
+		i.add_child(thing)
+		thing.destroyed.connect(on_thing_destroyed)
 		
 		if current_frame == 0:
-			enemy.global_position = Vector2(randi_range(150,500),i.global_position.y)
+			thing.global_position = Vector2(randi_range(200,420),i.global_position.y)
 		elif current_frame == 1:
-			enemy.global_position = Vector2(randi_range(200,425),i.global_position.y)
+			thing.global_position = Vector2(randi_range(250,380),i.global_position.y)
 		elif current_frame == 2:
 			if randi_range(0,1) == 0:
-				enemy.global_position = Vector2(randi_range(150,200),i.global_position.y)
+				thing.global_position = Vector2(randi_range(170,190),i.global_position.y)
 			else:
-				enemy.global_position = Vector2(randi_range(415,500),i.global_position.y)
-		
+				thing.global_position = Vector2(randi_range(440,470),i.global_position.y)
+
+
+func on_thing_destroyed(point_value):
+	add_points.emit(point_value)

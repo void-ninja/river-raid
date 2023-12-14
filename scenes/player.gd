@@ -4,12 +4,18 @@ signal speed_up
 signal slow_down
 signal shoot
 signal game_over
+signal fuel_update(amount:int)
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var collision_shape: CollisionPolygon2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 
-var can_shoot = true
+var can_shoot : bool = true
+var fuel : int = 100 : 
+	set(value):
+		fuel = clampi(value, 0, 100)
+		fuel_update.emit(value)
+var fuel_counter : int = 0
 
 func _ready() -> void:
 	sprite.frame = 0
@@ -46,9 +52,20 @@ func _physics_process(delta: float) -> void:
 		
 	if has_overlapping_areas():
 		for i in get_overlapping_areas():
-			if i.to_string() != "rocket":
+			if i.to_string() == "fuel_depot":
+				fuel += 2
+				fuel_counter = 0
+			elif i.to_string() != "rocket":
 				game_over.emit()
 				# explode()
+	
+	fuel_counter += 1
+	if fuel_counter > 5:
+		fuel -= 1
+		fuel_counter = 0
+		
+	if fuel == 0:
+		game_over.emit()
 
 
 func toggle_can_shoot():

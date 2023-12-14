@@ -1,33 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6vpuqhsvpwcx"]
+[gd_scene load_steps=9 format=3 uid="uid://c4v3l435gp8k2"]
 
-[ext_resource type="Script" path="res://scenes/boat.gd" id="1_ljgu5"]
+[ext_resource type="Script" path="res://scenes/fuel_depot.gd" id="1_52jac"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bmsql"]
-size = Vector2(69, 18)
-
-[sub_resource type="Gradient" id="Gradient_0614c"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_71kqq"]
-gradient = SubResource("Gradient_0614c")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nexlu"]
-particle_flag_disable_z = true
-emission_shape_scale = Vector3(15, 10, 1)
-emission_shape = 3
-emission_box_extents = Vector3(1, 1, 1)
-direction = Vector3(0, -1, 0)
-spread = 84.521
-initial_velocity_min = 200.0
-initial_velocity_max = 200.0
-gravity = Vector3(0, 200, 0)
-damping_min = 38.202
-damping_max = 38.202
-scale_min = 4.0
-scale_max = 5.0
-color_ramp = SubResource("GradientTexture1D_71kqq")
-
-[sub_resource type="Animation" id="Animation_8kqtq"]
+[sub_resource type="Animation" id="Animation_02j5x"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -66,7 +41,7 @@ tracks/2/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_mnv2w"]
+[sub_resource type="Animation" id="Animation_ckkpe"]
 resource_name = "explode"
 length = 2.0
 tracks/0/type = "value"
@@ -120,34 +95,57 @@ tracks/3/keys = {
 }]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ss3c1"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ahjql"]
 _data = {
-"RESET": SubResource("Animation_8kqtq"),
-"explode": SubResource("Animation_mnv2w")
+"RESET": SubResource("Animation_02j5x"),
+"explode": SubResource("Animation_ckkpe")
 }
 
-[node name="Boat" type="Area2D"]
-script = ExtResource("1_ljgu5")
+[sub_resource type="Gradient" id="Gradient_jmgjh"]
+colors = PackedColorArray(0.941176, 0, 0.227451, 1, 0.941176, 0, 0.227451, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d4g3k"]
+gradient = SubResource("Gradient_jmgjh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qiila"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 1)
+direction = Vector3(0, -1, 0)
+spread = 90.0
+initial_velocity_min = 100.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 98, 0)
+damping_min = 30.0
+damping_max = 30.0
+scale_min = 2.0
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_d4g3k")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k0wao"]
+size = Vector2(42, 64)
+
+[node name="FuelDepot" type="Area2D"]
+script = ExtResource("1_52jac")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-offset = Vector2(0, 7)
-polygon = PackedVector2Array(-38, -20, -3, -20, -3, -52, 32, -25, 1, -25, 1, -20, 37, -20, 30, -1, -30, -1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -4)
-shape = SubResource("RectangleShape2D_bmsql")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-texture_filter = 1
-emitting = false
-amount = 400
-process_material = SubResource("ParticleProcessMaterial_nexlu")
-lifetime = 2.0
-one_shot = true
-explosiveness = 0.89
-local_coords = true
+color = Color(0.941176, 0, 0.227451, 1)
+offset = Vector2(-4, 2)
+polygon = PackedVector2Array(-14, -32, -14, 27, 22, 27, 22, -32)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_ss3c1")
+"": SubResource("AnimationLibrary_ahjql")
 }
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 300
+process_material = SubResource("ParticleProcessMaterial_qiila")
+lifetime = 2.0
+one_shot = true
+explosiveness = 0.9
+local_coords = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_k0wao")

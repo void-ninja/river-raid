@@ -1,6 +1,7 @@
 extends Node
 
 signal checkpoint
+signal add_points(amount)
 
 var section = preload("res://scenes/section.tscn")
 var bridge = preload("res://scenes/bridge.tscn")
@@ -26,6 +27,7 @@ func start() -> void:
 	section2.global_position = Vector2(0,0-VIEWPORT_HEIGHT)
 	section2.deleted.connect(new_section)
 	add_child(section2)
+	section2.add_points.connect(on_section_add_points)
 	section2.set_frame(0)
 	current_length += 1
 	
@@ -44,6 +46,7 @@ func new_section(old_section_global_position_y):
 		current_section.global_position = Vector2(0, old_section_global_position_y - 2*VIEWPORT_HEIGHT)
 		current_section.deleted.connect(new_section)
 		add_child(current_section)
+		current_section.add_points.connect(on_section_add_points)
 		current_section.set_frame(randi_range(0,2))
 		current_length += 1
 	else:
@@ -53,7 +56,6 @@ func new_section(old_section_global_position_y):
 		
 
 func new_level_section(global_pos:float):
-	
 	var start_section = section.instantiate()
 	start_section.global_position.y = global_pos
 	start_section.deleted.connect(new_section)
@@ -69,3 +71,7 @@ func new_level_section(global_pos:float):
 func _on_bridge_destroyed():
 	level_length += 2
 	checkpoint.emit()
+
+
+func on_section_add_points(amount):
+	add_points.emit(amount)

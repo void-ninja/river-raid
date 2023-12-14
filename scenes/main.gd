@@ -7,13 +7,25 @@ var rocket = preload("res://scenes/rocket.tscn")
 @onready var rocket_positioner_left: Node2D = $Player/RocketPositionerLeft
 @onready var level_manager: Node = $LevelManager
 @onready var main_menu: Control = $MainMenu
-@onready var level_text: Label = $LevelText
+@onready var level_text: Label = $UI/LevelText
+@onready var score_text: Label = $UI/ScoreText
+@onready var fuel_indicator: ProgressBar = $UI/FuelIndicator
+@onready var ui: Control = $UI
+@onready var high_score_text: Label = $MainMenu/HighScoreText
 
 var start_position := Vector2(320,500)
 var current_level := 0
+var score := 0 : 
+	set(value):
+		score = value
+		score_text.text = "Score: " + str(score)
+var high_score := 0 :
+	set(value):
+		high_score = value
+		high_score_text.text = "Highscore: " + str(high_score)
 
 func _ready() -> void:
-	level_text.hide()
+	ui.hide()
 	main_menu.show()
 	get_tree().paused = true
 	
@@ -30,7 +42,7 @@ func _on_player_shoot() -> void:
 
 
 func _on_main_menu_start() -> void:
-	level_text.show()
+	ui.show()
 	level_manager.start()
 	_on_player_shoot()
 
@@ -40,12 +52,17 @@ func _on_player_game_over() -> void:
 		if i.to_string() == "rocket":
 			i.queue_free()
 	
-	level_text.hide()
 	main_menu.show()
 	get_tree().paused = true
 	
+	if score > high_score:
+		high_score = score
+	
+	score = 0 
+	
 	player.global_position = start_position
 	player.rotation_degrees = 0
+	player.fuel = 100
 	
 	current_level -= 1 # to account for the checkpoint bridge
 	
@@ -64,3 +81,12 @@ func _on_player_speed_up() -> void:
 func _on_level_manager_checkpoint() -> void:
 	current_level += 1
 	level_text.text = "Level " + str(current_level)
+	player.fuel = 100
+
+
+func _on_player_fuel_update(amount: int) -> void:
+	fuel_indicator.value = amount
+
+
+func _on_level_manager_add_points(amount: Variant) -> void:
+	score += amount

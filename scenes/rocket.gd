@@ -11,7 +11,7 @@ func _physics_process(delta: float) -> void:
 	if has_overlapping_areas():
 		for i in get_overlapping_areas():
 			if i.to_string() != "player":
-				if i.has_method("destroy"):
+				if i.has_method("destroy") and global_position.y > 10:
 					i.destroy()
 				
 				queue_free()
